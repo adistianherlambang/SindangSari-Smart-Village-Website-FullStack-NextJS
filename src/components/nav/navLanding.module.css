@@ -1,0 +1,183 @@
+.navbar {
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.navOpen {
+    position: sticky;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.menu {
+    position: relative;
+    z-index: 99;
+    display: flex;
+    gap: 2rem;
+    font-size: 1.125rem;
+    font-weight: bold;
+    align-items: center;
+}
+
+.menu a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.loginButton {
+    position: relative;
+    z-index: 3;
+    border: solid #cff24d 3px;
+    background-color: #cff24d;
+    color: black !important;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: ease-in-out 0.5s;
+}
+
+.loginButton:hover {
+    background-color: #cef24d00;
+    color: #ffffff !important;
+}
+
+.menuMobile {
+    display: none;
+}
+
+.line {
+    height: 0.3rem;
+    margin-top: 0.4rem;
+    width: 2rem;
+    background-color: black;
+    border-radius: 100rem;
+    transition: ease-in-out 0.3s;
+    animation: line 0.3s ease-in-out;
+}
+
+.lineOne {
+    transform: rotate(135deg);
+    animation: lineAni 0.3s ease-in-out;
+}
+
+.lineTwo {
+    transform: rotate(135deg);
+    opacity: 0;
+    animation: lineAni 0.3s ease-in-out;
+}
+
+.mobileMenu {
+    position: fixed;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    width: 100%;
+    height: 94%;
+    background-color: #cff24d;
+    transition: 0.3s ease-in-out;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 4rem;
+    top: 0;
+    left: 50rem;
+    margin-top: 3.5rem;
+    box-shadow: 0px 4px 100px 50px #cff24d;
+}
+
+.menuDisable {
+    opacity: 0;
+}
+
+.menuOpen {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 2rem;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transition: 0.3s ease-in-out;
+}
+
+.lineGap {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+}
+
+.logGap {
+    margin-top: 0.5rem;
+}
+
+@keyframes lineAni {
+    0% {
+        scale: 1;
+        height: 0.3rem;
+    }
+    50% {
+        scale: 0.2;
+        height: 0.1rem;
+    }
+    100% {
+        scale: 1;
+        height: 0.3rem;
+    }
+}
+
+@media screen and (max-width: 832px) {
+    .navbar {
+        padding: 1.5rem 2.5rem;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+    }
+
+    .menu {
+        gap: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .loginButton {
+        padding: 0.5rem 1rem;
+    }
+    
+}
+
+@media screen and (max-width: 679px) {
+    .navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .menu {
+        gap: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .loginButton {
+        padding: 0.25rem 0.75rem;
+    }
+    
+}
+
+@media screen and (max-width: 554px) {
+    .menu {
+        display: none;
+    }
+    .menuMobile {
+        display: block;
+    }
+}

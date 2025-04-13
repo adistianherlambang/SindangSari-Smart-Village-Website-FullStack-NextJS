@@ -1,0 +1,116 @@
+.headerContainer {
+    background-size: cover;
+    background-position: center;
+}
+
+.header {   
+    height: 53rem;
+    padding: 8rem 4rem;
+    display: flex;
+    justify-content: flex-end;
+    color: white;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.headerTag {
+    font-size: 1rem;
+    font-weight: bold;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: solid white 0.1rem;
+    padding: 1rem 2rem;
+    width: fit-content;
+    border-radius: 100rem;
+    background-image: linear-gradient(120deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 60%);
+  background-size: 200% 100%;
+  animation: tag 1.5s infinite linear;
+}
+
+@keyframes tag {
+    0% {
+        background-position: 200%;
+    }
+    100% {
+        background-position: 0%;
+    }
+}
+
+.test {
+    font-size: 5rem;
+}
+
+.headerText {
+    font-size: 4rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    width: 80%;
+    line-height: 1.2;
+}
+
+.headerPar {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-top: 1rem;
+    width: 50%;
+    line-height: 1.5;
+}
+
+.headerBtn {
+    margin-top: 1.5rem;
+    background-color: #CFF24D;
+    color: black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 1rem 2rem 1rem 2.5rem;
+    width: fit-content;
+    gap: 1rem;
+    border-radius: 9999px;
+    transition: 0.3s ease-in-out;
+}
+
+.headerBtnText {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.headerArrow {
+    height: 3rem;
+    width: 3rem;
+    transition: 0.3s ease-in-out;
+    animation: arrow 0.5s ease;
+}
+
+.headerBtn:hover {
+    padding-left: 5rem;
+}
+
+.headerArrowHover {
+    transform: rotateZ(90deg);
+    animation: arrowHover 0.5s ease;
+}
+
+@keyframes arrow {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 0.5;
+    }
+    100% {
+        scale: 1;
+    }
+}
+
+@keyframes arrowHover {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 0.5;
+    }
+    100% {
+        scale: 1;
+    }
+}
