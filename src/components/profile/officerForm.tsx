@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase/clientApp";
@@ -15,8 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
+} from "@/components/ui/alert-dialog";
 
 type Officer = {
   id?: string;
@@ -31,6 +28,9 @@ export default function OfficerForm() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [officer, setOfficers] = useState<Officer[]>([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     fetchOfficers();
   }, []);
@@ -42,6 +42,7 @@ export default function OfficerForm() {
       ...doc.data(),
     })) as Officer[];
     setOfficers(officerData);
+    setCurrentPage(1);
   };
 
   const uploadImage = async () => {
@@ -64,11 +65,6 @@ export default function OfficerForm() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    
-    setName("")
-    setPosition("")
-    setImageFile(null)
-
     e.preventDefault();
     if (!name || !position || !imageFile) {
       alert("Semua field harus diisi!");
@@ -99,38 +95,39 @@ export default function OfficerForm() {
       await fetch("/api/upload/officer", {
         method: "DELETE",
         headers: {
-          "Content-Type" : "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fileName: imageUrl.split("/").pop() })
-      })
-      console.log(imageUrl)   
+        body: JSON.stringify({ fileName: imageUrl.split("/").pop() }),
+      });
       fetchOfficers();
     } catch (error) {
-      console.error("Gagal Menghapus Perangkat Desa:", error)
+      console.error("Gagal Menghapus Perangkat Desa:", error);
     }
   };
-  
-  // const handleDelete = async (id: string, imageUrl: string) => {
-  //   try {
-  //     await deleteDoc(doc(db, "blogs", id));
-  //     await fetch("/api/upload/officer", {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ fileName: imageUrl.split("/").pop() }),
-  //     });
-  //     fetchOfficers();
-  //   } catch (error) {
-  //     console.error("Error menghapus blog:", error);
-  //   }
-  // };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentOfficers = officer.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(officer.length / itemsPerPage);
+
+  const renderPagination = () => {
+    const pagination = [];
+
+    if (currentPage > 3) pagination.push('...');
+
+    for (let i = Math.max(currentPage - 1, 1); i <= Math.min(currentPage + 1, totalPages); i++) {
+      pagination.push(i);
+    }
+
+    if (currentPage < totalPages - 2) pagination.push('...');
+
+    return pagination;
+  };
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <p className={styles.formTitle}>Tambah Perangkat Desa</p>
-        {/* <p className="text-white">Tambah Officer</p> */}
         <input
           type="text"
           placeholder="Nama Perangkat Desa"
@@ -154,7 +151,6 @@ export default function OfficerForm() {
             className={styles.inputHidden}
           />
         </label>
-
         <button type="submit" className={styles.button}>
           Tambah Perangkat Desa
         </button>
@@ -163,43 +159,100 @@ export default function OfficerForm() {
       <table className={styles.officerTable}>
         <thead>
           <tr>
+            <th>No.</th>
             <th>Nama</th>
             <th>Jabatan</th>
             <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
-          {officer.map((officer) => (
+          {currentOfficers.map((officer, index) => (
             <tr key={officer.id}>
+              <td style={{maxWidth: "1rem", width: "0.5rem"}}>{index + 1 + (currentPage - 1) * itemsPerPage}.</td>
               <td>{officer.name}</td>
               <td>{officer.position}</td>
               <td>
-                {/* <button className={styles.deleteButton}>
-                  Hapus
-                </button> */}
-               <AlertDialog>
-                <AlertDialogTrigger className={styles.deleteButton}>Hapus</AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Anda yakin ingin menghapus?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Tindakan ini tidak dapat dibatalkan. Data perangkat desa yang dipilih akan dihapus secara permanen.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction style={{backgroundColor: "red"}} onClick={() => handleDelete(officer.id!, officer.image)}>
-                      Ya, Hapus
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                <AlertDialog>
+                  <AlertDialogTrigger className={styles.deleteButton}>
+                    Hapus
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Anda yakin ingin menghapus?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Tindakan ini tidak dapat dibatalkan. Data perangkat desa yang dipilih akan dihapus secara permanen.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Batal</AlertDialogCancel>
+                      <AlertDialogAction
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => handleDelete(officer.id!, officer.image)}
+                      >
+                        Ya, Hapus
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* Pagination Buttons */}
+      <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+        {currentPage > 1 && (
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#e5e7eb",
+              color: "#000",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+            }}
+          >
+            &lt; Previous
+          </button>
+        )}
+
+        {renderPagination().map((page, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (page !== '...') setCurrentPage(page as number);
+            }}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: page === currentPage ? "#2563eb" : "#e5e7eb",
+              color: page === currentPage ? "#fff" : "#000",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: page === '...' ? "not-allowed" : "pointer",
+            }}
+          >
+            {page}
+          </button>
+        ))}
+
+        {currentPage < totalPages && (
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#e5e7eb",
+              color: "#000",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+            }}
+          >
+            Next &gt;
+          </button>
+        )}
+      </div>
     </div>
   );
 }

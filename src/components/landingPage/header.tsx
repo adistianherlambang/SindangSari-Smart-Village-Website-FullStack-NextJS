@@ -12,7 +12,7 @@ import NavLanding from "@/components/nav/navLanding";
 
 export default function Header() {
   
-    const {ref, inView} = useInView({triggerOnce: false})
+    const {ref, inView} = useInView({triggerOnce: true})
     const [isHover, setIsHover] = useState(false);
 
     return(

@@ -63,12 +63,13 @@ export default function OfficerList() {
                     </p>
                 </div>
             </div>
+
             <div className={styles.carouselContainer}>
-                <Carousel className={styles.carousel}>
+                <Carousel className={styles.carousel}  options={{draggable: false}}>
                     <CarouselContent className={styles.carouselContent}>
-                        {officer.map((office) => (
-                            <CarouselItem className={styles.carouselItem} key={office.id}>
-                                <div className={styles.card} style={{
+                        {officer.map((office, index) => (
+                            <CarouselItem className={styles.carouselItem} key={index}>
+                                <div key={index} className={styles.card} style={{
                                     backgroundImage: `url('${office.image}')`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
@@ -81,8 +82,8 @@ export default function OfficerList() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className={styles.arrow} />
-                    <CarouselNext className={styles.arrow}/>
+                    {/* <CarouselPrevious className={styles.arrow} />
+                    <CarouselNext className={styles.arrow}/> */}
                 </Carousel>
             </div>
         </div>
