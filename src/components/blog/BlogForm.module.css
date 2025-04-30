@@ -83,37 +83,19 @@
     margin-top: 1.5rem;
 }
 
-/* .blogItem {
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 0.25rem;
-    margin-top: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.deleteButton {
-    background-color: #ef4444;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-} */
-
-.blogTable {
+.table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 4rem;
 }
 
-.blogTable th, .blogTable td {
+.table th, .table td {
     border: 1px solid #ddd;
     padding: 0.75rem;
     text-align: left;
 }
 
-.blogTable th {
+.table th {
     background-color: #f3f4f6;
     font-weight: 600;
 }

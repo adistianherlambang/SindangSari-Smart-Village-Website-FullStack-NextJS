@@ -94,25 +94,25 @@
     cursor: pointer;
 } */
 
-.officerTable {
+.table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 4rem;
 }
 
-.officerTable th, .officerTable td {
+.table th, .table td {
     border: 1px solid #ddd;
     padding: 0.75rem;
     text-align: left;
 }
 
-.officerTable th {
+.table th {
     background-color: #f3f4f6;
     font-weight: 600;
 }
 
 /* Warna berbeda untuk baris selang-seling */
-.officerTable tbody tr:nth-child(even) {
+.table tbody tr:nth-child(even) {
     background-color: #f9fafb;
 }
 
@@ -132,7 +132,7 @@
 
 /* Responsif: Jika layar kecil, atur agar lebih enak dibaca */
 @media (max-width: 600px) {
-    .officerTable th, .officerTable td {
+    .table th, .table td {
         padding: 0.5rem;
     }
 }

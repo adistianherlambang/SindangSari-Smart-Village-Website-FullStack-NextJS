@@ -3,6 +3,17 @@
     user-select: none;
 }
 
+/* Tambahkan ini di src/app/globals.css atau styles global kamu */
+.no-scrollbar::-webkit-scrollbar {
+    display: none !important; /* Untuk Chrome, Safari, Opera */
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none !important; /* Untuk IE dan Edge */
+    scrollbar-width: none !important;    /* Untuk Firefox */
+  }
+  
+
 .carouselContainer::before {
     content: "";
     position: absolute;
@@ -110,4 +121,5 @@
     color: white;
     width: 3rem;
     height: 3rem;
+    cursor: pointer;
 }

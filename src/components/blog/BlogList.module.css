@@ -39,7 +39,6 @@
 }
 
 .compButton:hover {
-    transform: scale(1.05);
     gap: 1.5rem;
 }
 

@@ -7,6 +7,8 @@ import styles from "@/app/landing.module.css"
 import Profile from "@/components/profile/profile";
 import Officer from "@/components/profile/officer";
 import Footer from "@/components/footer/footer";
+import TestPage from "@/components/tes";
+import TestPages from "@/components/tes2";
 
 export default function Page() {
   
@@ -23,6 +25,8 @@ export default function Page() {
             Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan Desa. Aspek pemerintahan, penduduk, demografi, potensi Desa, dan juga berita tentang Desa.
           </div>
         </div>
+        <TestPage/>
+        <TestPages/>
         <Officer/>
         <BlogList />
       </div>

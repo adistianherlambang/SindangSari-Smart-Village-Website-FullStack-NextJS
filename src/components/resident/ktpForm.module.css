@@ -1,0 +1,119 @@
+/* ktpForm.module.css */
+.main {
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form > div {
+    margin-bottom: 1rem;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+  
+  .input {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .select {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .flexGap2 {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .flex1 {
+    flex: 1;
+  }
+  
+  .w13 {
+    width: 33.333333%;
+  }
+  
+  .buttonSubmit {
+    width: 100%;
+    background-color: #2563eb;
+    color: #fff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .tableContainer {
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+  
+  .tableTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .table {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  
+  .tableHeadRow {
+    background-color: #f3f4f6;
+  }
+  
+  .tableHeadCell {
+    border: 1px solid #e5e7eb;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  
+  .tableBodyCell {
+    border: 1px solid #e5e7eb;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    text-align: center;
+  }
+  
+  .downloadLink {
+    color: #2563eb;
+    text-decoration: underline;
+    margin-right: 0.5rem;
+  }
+  
+  .belumUpload {
+    color: #9ca3af;
+  }
+
+  .topSection {
+    display: flex;
+    gap: 2rem;
+  }

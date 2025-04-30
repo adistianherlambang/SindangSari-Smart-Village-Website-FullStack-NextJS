@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase/clientApp";
 import styles from "./BlogForm.module.css";
+import tables from "@/components/admin/table.module.css"
 
 import {
   AlertDialog,
@@ -137,7 +138,7 @@ export default function BlogForm() {
         </button>
       </form>
 
-      <table className={styles.blogTable}>
+      <table className={tables.table}>
         <thead>
           <tr>
             <th>Judul</th>

@@ -65,7 +65,7 @@ export default function OfficerList() {
             </div>
 
             <div className={styles.carouselContainer}>
-                <Carousel className={styles.carousel}  options={{draggable: false}}>
+                <Carousel className={styles.carousel}>
                     <CarouselContent className={styles.carouselContent}>
                         {officer.map((office, index) => (
                             <CarouselItem className={styles.carouselItem} key={index}>
@@ -82,8 +82,8 @@ export default function OfficerList() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    {/* <CarouselPrevious className={styles.arrow} />
-                    <CarouselNext className={styles.arrow}/> */}
+                    <CarouselPrevious className={styles.arrow} />
+                    <CarouselNext className={styles.arrow}/>
                 </Carousel>
             </div>
         </div>

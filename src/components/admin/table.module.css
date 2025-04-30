@@ -1,0 +1,43 @@
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.deleteButton {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    border: none;
+    transition: 3 00ms ease;
+}
+
+.deleteButton:hover {
+    background-color: #b12020;
+}
+
+/* Responsif: Jika layar kecil, atur agar lebih enak dibaca */
+@media (max-width: 600px) {
+    .table th, .table td {
+        padding: 0.5rem;
+    }
+}

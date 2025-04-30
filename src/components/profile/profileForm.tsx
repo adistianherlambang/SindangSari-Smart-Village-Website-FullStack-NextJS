@@ -27,7 +27,7 @@ export default function ProfileForm() {
   const [selectedProfile, setSelectedProfile] = useState<ProfileData | null>(null);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [open, setOpen] = useState(false); // State untuk mengontrol dialog
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -52,7 +52,7 @@ export default function ProfileForm() {
     setSelectedProfile(profile);
     setTitle(profile.title);
     setDesc(profile.desc);
-    setOpen(true); // Buka dialog
+    setOpen(true); 
   };
 
   const handleSave = async () => {
