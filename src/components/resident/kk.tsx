@@ -17,17 +17,42 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
+type Person = {
+  id: string;
+  nik: string;
+  nama: string;
+  noKk: string;
+  hubungan: string;
+  tanggalLahir: string;
+  fotoKk?: string;
+};
+
+export function TotalKK() {
+  const [data, setData] = useState<Person[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const snapshot = await getDocs(collection(db, 'penduduk'));
+      const results: Person[] = snapshot.docs.map((docItem) => ({
+        ...(docItem.data() as Person),
+        id: docItem.id,
+      }));
+      setData(results);
+    };
+
+    fetchData();
+  }, []);
+
+  const uniqueKKCount = Array.from(new Set(data.map((item) => item.noKk))).length;
+
+  return (
+    <div>
+      <p>Total Kartu Keluarga: {uniqueKKCount}</p>
+    </div>
+  );
+}
 
 export default function KKTableTest() {
-  type Person = {
-    id: string;
-    nik: string;
-    nama: string;
-    noKk: string;
-    hubungan: string;
-    tanggalLahir: string;
-    fotoKk?: string;
-  };
 
   const [data, setData] = useState<Person[]>([]);
   const [selectedKK, setSelectedKK] = useState<string | null>(null);

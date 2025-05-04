@@ -24,9 +24,7 @@ export default function Page() {
           <div className={styles.right}>
             Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan Desa. Aspek pemerintahan, penduduk, demografi, potensi Desa, dan juga berita tentang Desa.
           </div>
-        </div>
-        <TestPage/>
-        <TestPages/>
+        </div>  
         <Officer/>
         <BlogList />
       </div>

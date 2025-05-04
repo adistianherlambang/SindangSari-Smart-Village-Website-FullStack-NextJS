@@ -5,6 +5,8 @@ import { auth } from "@/firebase/clientApp";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import styles from "./admin.module.css"
+import { collection, getDocs, updateDoc, query, where, getDocs as getDocByKk, doc } from 'firebase/firestore';
+import { db } from "@/firebase/clientApp";
 
 import {
   Accordion,
@@ -20,7 +22,8 @@ import OfficerForm from "@/components/profile/officerForm";
 import Footer from "@/components/footer/footer";
 import ResidentForm from "@/components/resident/ktpForm";
 import { KTPFormTest, KTPTableTest } from "@/components/resident/ktpFormTest";
-import KKTableTest from "@/components/resident/kk";
+import KKTableTest, {TotalKK  } from "@/components/resident/kk";
+import CountKTP from "@/components/count/count";
 
 
 export default function AdminPage() {
@@ -29,6 +32,8 @@ export default function AdminPage() {
   const [activeComponent, setActiveComponent] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+
+  const { kk, ktp } = CountKTP()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -49,7 +54,6 @@ export default function AdminPage() {
 
   return (
     <div className={`${styles.container} ${isOpen ? styles.shifted : ""}`}>
-      
       <div className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
         <p className={styles.sidebarLogo}>Pemerintah Desa<br/> Sindang Sari</p>
         <Accordion type="single" collapsible>
@@ -130,7 +134,7 @@ export default function AdminPage() {
           {activeComponent === "kk" && <KKTableTest/>}
           {/* {activeComponent === "Kependudukan" && <ResidentForm/>} */}
         </div>
-        : <p className="font-xl font-bold">wdnhq</p>
+        : <div>jumlah ktp : {ktp}, jumlah kk: {kk}</div>
       }
       <div style={{height: "10rem"}}></div>
       <Footer/>

@@ -302,6 +302,9 @@ export function KTPTableTest() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
+        <div>
+          <h2>{filteredData.length}</h2>
+        </div>
         <table className={tables.table}>
           <thead>
             <tr className={styles.tableHeadRow}>
