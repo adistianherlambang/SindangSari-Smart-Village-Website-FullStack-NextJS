@@ -7,8 +7,6 @@ import styles from "@/app/landing.module.css"
 import Profile from "@/components/profile/profile";
 import Officer from "@/components/profile/officer";
 import Footer from "@/components/footer/footer";
-import TestPage from "@/components/tes";
-import TestPages from "@/components/tes2";
 
 export default function Page() {
   

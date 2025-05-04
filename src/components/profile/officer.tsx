@@ -63,7 +63,6 @@ export default function OfficerList() {
                     </p>
                 </div>
             </div>
-
             <div className={styles.carouselContainer}>
                 <Carousel className={styles.carousel}>
                     <CarouselContent className={styles.carouselContent}>

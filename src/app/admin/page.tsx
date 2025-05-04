@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import styles from "./admin.module.css"
 import { collection, getDocs, updateDoc, query, where, getDocs as getDocByKk, doc } from 'firebase/firestore';
 import { db } from "@/firebase/clientApp";
+import CountUp from "@/components/ui/CountUp/CountUp";
 
 import {
   Accordion,
@@ -133,8 +134,24 @@ export default function AdminPage() {
           {activeComponent === "ktp" && <><KTPTableTest/> </>}
           {activeComponent === "kk" && <KKTableTest/>}
           {/* {activeComponent === "Kependudukan" && <ResidentForm/>} */}
+        </div> :
+        <div className={styles.home}>
+          <h1 className={styles.title}>Sistem Administrasi Desa</h1>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <CountUp from={0}to={11}separator="," direction="up" duration={1} className={styles.title}/>
+              <p className={styles.desc}>Dusun</p>
+            </div>
+            <div className={styles.content}>
+              <CountUp from={0}to={ktp}separator="," direction="up" duration={1} className={styles.title}/>
+              <p className={styles.desc}>Penduduk</p>
+            </div>
+            <div className={styles.content}>
+              <CountUp from={0} to={kk}separator="," direction="up" duration={1} className={styles.title}/>
+              <p className={styles.desc}>Keluarga</p>
+            </div>
+          </div>
         </div>
-        : <div>jumlah ktp : {ktp}, jumlah kk: {kk}</div>
       }
       <div style={{height: "10rem"}}></div>
       <Footer/>

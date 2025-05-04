@@ -26,6 +26,7 @@
     "formidable": "^2.0.1",
     "framer-motion": "^12.6.3",
     "fs": "^0.0.1-security",
+    "gsap": "^3.13.0",
     "headlessui": "^0.0.0",
     "is-url": "^1.2.4",
     "lucide-react": "^0.484.0",

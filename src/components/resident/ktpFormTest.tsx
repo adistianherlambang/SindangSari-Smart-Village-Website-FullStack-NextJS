@@ -155,7 +155,7 @@ export function KTPFormTest() {
         <div className={styles.flexGap2}>
           <div className={styles.flex1}>
             <label className={styles.label}>Jenis Kelamin</label>
-            <select defaultValue="Jenis Kelamin" name="jenisKelamin" value={form.jenisKelamin} onChange={handleChange} required className={styles.select}>
+            <select disabled value={form.jenisKelamin} onChange={handleChange} required className={styles.select}>
               <option value="" style={{color: "gray", fontSize: "14px"}}>Jenis Kelamin</option>
               <option value="Laki-laki">Laki-laki</option>
               <option value="Perempuan">Perempuan</option>
