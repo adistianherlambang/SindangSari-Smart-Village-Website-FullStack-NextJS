@@ -39,7 +39,7 @@ export default function Profile() {
                 <div className={styles.container} key={profile.id}>
                     <p>Profil Desa Sindang Sari</p>
                     <p className={styles.title}>{profile.title}</p>
-                    <p>{profile.desc}</p>
+                    <p className={styles.desc}>{profile.desc}</p>
                 </div>
             ))}
         </div>

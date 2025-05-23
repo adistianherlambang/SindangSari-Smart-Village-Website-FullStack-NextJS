@@ -9,3 +9,7 @@
     font-size: 2rem;
     font-weight: 700;
 }
+
+.desc {
+    text-align: justify;
+}
