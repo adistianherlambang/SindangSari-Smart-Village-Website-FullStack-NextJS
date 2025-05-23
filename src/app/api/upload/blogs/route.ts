@@ -25,7 +25,7 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ error: "Nama file tidak ditemukan" }, { status: 400 });
     }
 
-    const filePath = path.join(process.cwd(), "public/blog-images", fileName);
+    const filePath = path.join(process.cwd(), "public/ ", fileName);
     
     try {
         await unlink(filePath);

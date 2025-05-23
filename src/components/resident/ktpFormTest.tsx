@@ -9,6 +9,8 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  query,
+  where,
 } from 'firebase/firestore';
 
 import {
@@ -23,7 +25,8 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import styles from './ktpForm.module.css'; // Import the CSS Module
+import styles from './ktpForm.module.css';
+import { isDuplicateFotoKk } from './fotoUtills';
 import tables from "@/components/admin/table.module.css"
 import input from '@/components/admin/input.module.css'
 
@@ -45,6 +48,7 @@ export interface FormData {
   kewarganegaraan: string;
   hubungan: string;
   ktpFileName?: string;
+  fotoKk?: string;
 }
 
 export interface FormDataWithId extends FormData {
@@ -155,8 +159,8 @@ export function KTPFormTest() {
         <div className={styles.flexGap2}>
           <div className={styles.flex1}>
             <label className={styles.label}>Jenis Kelamin</label>
-            <select disabled value={form.jenisKelamin} onChange={handleChange} required className={styles.select}>
-              <option value="" style={{color: "gray", fontSize: "14px"}}>Jenis Kelamin</option>
+            <select name="jenisKelamin" value={form.jenisKelamin} onChange={handleChange} required className={styles.select}>
+              <option value="">Jenis Kelamin</option>
               <option value="Laki-laki">Laki-laki</option>
               <option value="Perempuan">Perempuan</option>
             </select>
@@ -200,7 +204,7 @@ export function KTPFormTest() {
         <div className={styles.flex1}>
           <label className={styles.label}>Hubungan</label>
           <select name='hubungan' value={form.hubungan} onChange={handleChange} required className={styles.input}>
-            <option disabled>Pilih Hubungan</option>
+            <option>Pilih Hubungan</option>
             <option>Kepala Keluarga</option>
             <option>Suami</option>
             <option>Istri</option>
@@ -231,6 +235,7 @@ export function KTPTableTest() {
     const [searchNik, setSearchNik] = useState('');
     const [searchKk, setSearchKk] = useState('');
     const [searchNama, setSearchNama] = useState('');
+    const [selectedFotoKk, setSelectedFotoKk] = useState<string | null>(null)
   
     useEffect(() => {
       const unsubscribe = onSnapshot(collection(db, 'penduduk'), (snapshot) => {
@@ -248,11 +253,60 @@ export function KTPTableTest() {
   
       return nikMatch && kkMatch && namaMatch;
     });
-  
-    const handleDelete = async (id: string) => {
-      await deleteDoc(doc(db, 'penduduk', id));
+
+    const handleDelete = async (
+      id: string,
+      ktpFileName: string,
+      noKk?: string,
+      fotoKk?: string
+    ) => {
+      // setSelectedFotoKk
+      // const q = query(collection(db, 'penduduk'), where('fotoKk', '==', fotoKk));
+      // const snapshot = await getDocs(q)
+      // const results: FormData[] = snapshot.docs.map((docItem) => ({
+      //   ...(docItem.data() as FormData),
+      //   id: docItem.id,
+      // }));
+      // console.log(results)
+      try {
+
+        await deleteDoc(doc(db, 'penduduk', id));
+
+        if (ktpFileName) {
+          await fetch('/api/upload/kependudukan/ktp', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              fileName: ktpFileName,
+              type: 'ktp',
+            }),
+          });
+          console.log(`File KTP ${ktpFileName} berhasil dihapus`);
+        }
+
+        // if (fotoKk) {
+        //   const res = await fetch('/api/upload/kependudukan/ktp', {
+        //     method: 'DELETE',
+        //     headers: {  
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //       pendudukId: id,
+        //       type: 'kk',
+        //     }),
+        //   });
+    
+        //   const result = await res.json();
+        //   console.log('Status penghapusan KK:', result);
+        // }
+      } catch (error) {
+        console.error('Gagal menghapus:', error);
+        alert('Gagal menghapus data penduduk');
+      }
     };
-  
+    
     return (
       <div className={input.container}>
         <h2 className={input.formTitle}>Data Penduduk</h2>
@@ -302,9 +356,6 @@ export function KTPTableTest() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <div>
-          <h2>{filteredData.length}</h2>
-        </div>
         <table className={tables.table}>
           <thead>
             <tr className={styles.tableHeadRow}>
@@ -318,17 +369,18 @@ export function KTPTableTest() {
           </thead>
           <tbody>
             {filteredData.length > 0 ? (
-              filteredData.map((d, i) => (
-                <tr key={d.id}>
-                  <td>{i + 1}</td>
-                  <td>{d.nik}</td>
-                  <td>{d.noKk}</td>
-                  <td>{d.nama}</td>
-                  <td>{d.alamat}</td>
+              filteredData.map((data, index) => (
+                <tr key={data.id}>
+                  <td>{index + 1}</td>
+                  <td>{data.nik}</td>
+                  <td>{data.noKk}</td>
+                  <td>{data.nama}</td>
+                  <td>{data.alamat}</td>
+                  <td>{data.fotoKk}</td>
                   <td>
-                    {d.ktpFileName ? (
+                    {data.ktpFileName ? (
                       <a
-                        href={`/kependudukan/ktp/${d.ktpFileName}`}
+                        href={`/kependudukan/ktp/${data.ktpFileName}`}
                         target="_blank"
                         className={styles.downloadLink}
                         download
@@ -349,7 +401,7 @@ export function KTPTableTest() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Batal</AlertDialogCancel>
-                          <AlertDialogAction style={{ backgroundColor: "red" }} onClick={() => handleDelete(d.id)}>
+                          <AlertDialogAction style={{ backgroundColor: "red" }} onClick={() => handleDelete(data.id, data.ktpFileName || '')}>
                             Hapus
                           </AlertDialogAction>
                         </AlertDialogFooter>

@@ -7,6 +7,7 @@ import styles from "@/app/landing.module.css"
 import Profile from "@/components/profile/profile";
 import Officer from "@/components/profile/officer";
 import Footer from "@/components/footer/footer";
+import MyTest from "@/components/resident/test";
 
 export default function Page() {
   
@@ -15,6 +16,7 @@ export default function Page() {
       <Header />
       <div className={styles.content} id="content">
         <Profile />
+        <MyTest />
         <div className={styles.jelajahiDesa}>
           <div className={styles.left}>
             Jelajah Desa
@@ -22,7 +24,7 @@ export default function Page() {
           <div className={styles.right}>
             Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan Desa. Aspek pemerintahan, penduduk, demografi, potensi Desa, dan juga berita tentang Desa.
           </div>
-        </div>  
+        </div>
         <Officer/>
         <BlogList />
       </div>

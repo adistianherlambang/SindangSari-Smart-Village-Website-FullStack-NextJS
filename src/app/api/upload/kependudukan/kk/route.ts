@@ -1,6 +1,8 @@
-import { writeFile } from 'fs/promises';
+import { writeFile, readdir, unlink } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
+import { db } from '@/firebase/clientApp';
+import { collection, getDocs } from 'firebase/firestore';
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -16,5 +18,7 @@ export async function POST(req: NextRequest) {
   const filePath = path.join(process.cwd(), 'public/kependudukan/kk', fileName);
 
   await writeFile(filePath, buffer);
+
   return NextResponse.json({ fileName });
 }
+

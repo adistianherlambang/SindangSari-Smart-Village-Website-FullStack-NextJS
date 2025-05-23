@@ -54,10 +54,24 @@ export function TotalKK() {
 
 export default function KKTableTest() {
 
+  const [anggotaKK, setAnggotaKK] = useState<Person[]>([]);
   const [data, setData] = useState<Person[]>([]);
   const [selectedKK, setSelectedKK] = useState<string | null>(null);
   const [fotoKkFiles, setFotoKkFiles] = useState<{ [kk: string]: File | null }>({});
   const [fotoKkUrls, setFotoKkUrls] = useState<{ [kk: string]: string }>({});
+  const [clean, setClean] = useState(false)
+
+  useEffect(() => {
+    if (!clean) {
+      fetch('/api/upload/kependudukan/kk', { method: 'DELETE' })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('Cleanup selesai:', data);
+          setClean(true); // biar ga jalan 2x
+        })
+        .catch((err) => console.error('Gagal cleanup:', err));
+    }
+  }, [clean]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +99,17 @@ export default function KKTableTest() {
     setFotoKkFiles((prev) => ({ ...prev, [noKk]: e.target.files?.[0] || null }));
   };
 
+  const handleLihatAnggota = async (kk: string) => {
+    setSelectedKK(kk);
+    const q = query(collection(db, 'penduduk'), where('noKk', '==', kk));
+    const snapshot = await getDocs(q);
+    const results: Person[] = snapshot.docs.map((docItem) => ({
+      ...(docItem.data() as Person),
+      id: docItem.id,
+    }));
+    setAnggotaKK(results);
+  };
+  
   const handleUploadFotoKk = async (noKk: string) => {
     const file = fotoKkFiles[noKk];
     if (!file) return;
@@ -106,7 +131,7 @@ export default function KKTableTest() {
     const fileName = dataRes.fileName;
     const fileUrl = `/kependudukan/kk/${fileName}`;
 
-    // Update semua penduduk dengan noKk yang sama
+    // buat update penduduk di kk yg sama
     const q = query(collection(db, 'penduduk'), where('noKk', '==', noKk));
     const snapshot = await getDocByKk(q);
     snapshot.forEach(async (docItem) => {
@@ -176,7 +201,7 @@ export default function KKTableTest() {
                   </td>
                   <td className="p-2">
                     <AlertDialog>
-                      <AlertDialogTrigger onClick={() => setSelectedKK(selectedKK === kk ? null : kk)}>Lihat Anggota</AlertDialogTrigger>
+                      <AlertDialogTrigger onClick={() => handleLihatAnggota(kk)}>Lihat Anggota</AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>Anggota KK</AlertDialogTitle>
