@@ -16,7 +16,7 @@ export default function Page() {
       <Header />
       <div className={styles.content} id="content">
         <Profile />
-        <MyTest />
+        {/* <MyTest /> */}
         <div className={styles.jelajahiDesa}>
           <div className={styles.left}>
             Jelajah Desa

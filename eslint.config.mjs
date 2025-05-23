@@ -6,7 +6,6 @@ import tsParser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  // Spread semua config recommended di sini
   js.configs.recommended,
   tseslint.configs.recommended,
   pluginReact.configs.recommended,
@@ -18,6 +17,5 @@ export default defineConfig([
       parserOptions: { ecmaVersion: "latest", sourceType: "module" },
       globals: globals.browser,
     },
-    // Tambahkan custom rules di sini jika perlu
   },
 ]);
