@@ -1,7 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
-import {db} from "@/firebase/clientApp";
+import { db } from "@/firebase/clientApp";
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
+export default async function BlogPage(props: any) {
+  const { params } = props;
   const docRef = doc(db, "blogs", params.id);
   const docSnap = await getDoc(docRef);
   const blog = docSnap.exists() ? docSnap.data() : null;

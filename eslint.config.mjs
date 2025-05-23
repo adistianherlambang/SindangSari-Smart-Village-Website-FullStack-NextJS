@@ -1,13 +1,23 @@
 import js from "@eslint/js";
 import globals from "globals";
-import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 
-
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], languageOptions: { globals: globals.browser } },
+  // Spread semua config recommended di sini
+  js.configs.recommended,
   tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  pluginReact.configs.recommended,
+  {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    plugins: { js, "@typescript-eslint": tseslint, react: pluginReact },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: { ecmaVersion: "latest", sourceType: "module" },
+      globals: globals.browser,
+    },
+    // Tambahkan custom rules di sini jika perlu
+  },
 ]);
