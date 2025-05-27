@@ -1,52 +1,69 @@
-import { writeFile, unlink } from "fs/promises";
-import { NextRequest, NextResponse } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
+import formidable, { File } from "formidable";
+import fs from "fs";
 import path from "path";
 
-export async function POST(req: NextRequest) {
-    const formData = await req.formData();
-    const file = formData.get("file") as File | null;
+// Nonaktifkan bodyParser bawaan Next.js
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-    if (!file) {
-        return NextResponse.json({ error: "File tidak ditemukan" }, { status: 400 });
-    }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), "public/officer", fileName);
-
-    await writeFile(filePath, buffer);
-    return NextResponse.json({ fileName });
+// Pastikan folder tujuan ada
+const uploadDir = path.join(process.cwd(), "public/officer");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// export async function DELETE(req: NextRequest) {
-//     const { fileName } = await req.json();
-//     if (!fileName) {
-//         return NextResponse.json({ error: "Nama file tidak ditemukan" }, { status: 400 });
-//     }
-
-//     const filePath = path.join(process.cwd(), "public/officer", fileName);
-    
-//     try {
-//         await unlink(filePath);
-//         return NextResponse.json({ message     : "File berhasil dihapus" });
-//     } catch (error) {
-//         return NextResponse.json({ error: "Gagal menghapus file", details: error }, { status: 500 });
-//     }
-// }
-
-export async function DELETE(req: NextRequest) {
-    const { fileName } = await req.json();
-    if (!fileName) {
-        return NextResponse.json({ error: "Nama file tidak ditemukan" }, { status: 400 });
-    }
-
-    const filePath = path.join(process.cwd(), "public/officer", fileName);
-    
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
     try {
-        await unlink(filePath);
-        return NextResponse.json({ message: "File berhasil dihapus" });
-    } catch (error) {
-        return NextResponse.json({ error: "Gagal menghapus file", details: error }, { status: 500 });
+      const form = new formidable.IncomingForm({
+        uploadDir,
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024, // 10MB
+        filename: (name, ext, part) => `${Date.now()}-${part.originalFilename}`,
+      });
+
+      form.parse(req, (err, fields, files) => {
+        if (err) {
+          console.error("Form parse error:", err);
+          return res.status(500).json({ error: "Gagal parsing form" });
+        }
+
+        const file = files.file as File;
+        if (!file) {
+          return res.status(400).json({ error: "File tidak ditemukan" });
+        }
+
+        return res.status(200).json({ fileName: path.basename(file.filepath) });
+      });
+    } catch (err) {
+      console.error("Upload exception:", err);
+      return res.status(500).json({ error: "Terjadi kesalahan server" });
     }
+
+  } else if (req.method === "DELETE") {
+    try {
+      const { fileName } = JSON.parse(req.body || "{}");
+
+      if (!fileName) return res.status(400).json({ error: "Nama file tidak ditemukan" });
+
+      const filePath = path.join(uploadDir, fileName);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("Gagal hapus:", err);
+          return res.status(500).json({ error: "Gagal menghapus file" });
+        }
+        return res.status(200).json({ message: "File berhasil dihapus" });
+      });
+    } catch (err) {
+      console.error("Delete error:", err);
+      return res.status(500).json({ error: "Terjadi kesalahan saat delete" });
+    }
+
+  } else {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 }
