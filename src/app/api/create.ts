@@ -1,31 +1,43 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
+import formidable, { File } from 'formidable';
+import fs from 'fs';
+
+// Disable default body parser
 export const config = {
   api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
+    bodyParser: false,
   },
 };
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+// Helper untuk parsing form
+const parseForm = async (req: NextApiRequest): Promise<{ fields: any; files: any }> =>
+  new Promise((resolve, reject) => {
+    const form = formidable({
+      maxFileSize: 10 * 1024 * 1024, // 10 MB
+      uploadDir: './public/uploads',
+      keepExtensions: true,
+    });
+
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err);
+      resolve({ fields, files });
+    });
+  });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('Masuk ke handler'); // <-- Debug 1
-
   if (req.method !== 'POST') {
-    console.log('Method bukan POST'); // <-- Debug 2
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
   try {
-    console.log('Body:', req.body); // <-- Debug 3
+    const { fields, files } = await parseForm(req);
+    console.log('Fields:', fields);
+    console.log('Files:', files);
 
-    // Simulasi penyimpanan data
-    // Misalnya ke Firestore:
-    // await firestore.collection('penduduk').add(req.body);
-
-    return res.status(200).json({ message: 'Data berhasil dibuat' });
+    // Simpan info atau kirim ke database kalau perlu
+    res.status(200).json({ message: 'Upload berhasil', data: { fields, files } });
   } catch (error) {
-    console.error('Terjadi error saat create:', error); // <-- Debug 4
-    return res.status(500).json({ message: 'Gagal membuat data' });
+    console.error('Upload error:', error);
+    res.status(500).json({ message: 'Upload gagal', error });
   }
 }
